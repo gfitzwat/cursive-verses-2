@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+	--color-brand-deep: #003366;
+	--color-brand-amber: #f8a03e;
+	--color-brand-blue-light: #5f5e97;
+	--color-brand-terracotta: #c2593f;
+	--color-brand-cream: #fdf6e2;
+	--color-brand-teal: #0f766e;
+}
+
+:root {
+	--color-blue-deep: #003366;
+	--color-orange-amber: #f8a03e;
+	--color-blue-light: #5f5e97;
+	--color-terracotta: #c2593f;
+	--color-cream: #fdf6e2;
+	--color-teal-accent: #0f766e;
+}
+
+.fitz-color-blue-deep {
+	fill: var(--color-blue-deep);
+}
+.fitz-color-orange-amber {
+	fill: var(--color-orange-amber);
+	stroke: var(--color-orange-amber);
+	stroke-miterlimit: 10;
+	stroke-width: 2px;
+}
+.fitz-color-blue-light {
+	fill: var(--color-blue-light);
+}
+
+@font-face {
+	font-family: "LearningCurve";
+	src: url("/fonts/learning_curve_regular_ot_tt.ttf") format("truetype");
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "LearningCurve";
+	src: url("/fonts/learning_curve_bold_ot_tt.ttf") format("truetype");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "LearningCurveDashed";
+	src: url("/fonts/learning_curve_dashed_ot_tt.ttf") format("truetype");
+}
+
+@media print {
+	.no-print {
+		display: none !important;
+	}
+	body {
+		background: white !important;
+	}
+	* {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+}
