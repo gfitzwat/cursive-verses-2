@@ -1,31 +1,31 @@
 {
-  "name": "cursive-verses-v2",
-  "version": "0.1.0",
-  "description": "Printable Bible verse cursive handwriting worksheets built with React and Cloudflare Pages.",
-  "license": "MIT",
-  "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "wrangler pages dev ./dist --compatibility-date=2024-09-23",
-    "type-check": "tsc --noEmit"
-  },
-  "dependencies": {
-    "jspdf": "^2.5.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.18.0"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241022.0",
-    "@tailwindcss/vite": "^4.0.0",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^6.0.3",
-    "concurrently": "^10.0.3",
-    "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.2",
-    "vite": "^8.1.0",
-    "wrangler": "^3.101.0"
-  }
+	"name": "cursive-verses-v2",
+	"version": "0.1.0",
+	"description": "Printable Bible verse cursive handwriting worksheets built with React and Cloudflare Pages.",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "wrangler pages dev ./dist --compatibility-date=2024-09-23",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"jspdf": "^2.5.2",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-router-dom": "^7.18.0"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20241022.0",
+		"@tailwindcss/vite": "^4.0.0",
+		"@types/react": "^18.3.18",
+		"@types/react-dom": "^18.3.5",
+		"@vitejs/plugin-react": "^6.0.3",
+		"concurrently": "^10.0.3",
+		"tailwindcss": "^4.0.0",
+		"typescript": "^5.7.2",
+		"vite": "^8.1.0",
+		"wrangler": "^3.101.0"
+	}
 }
