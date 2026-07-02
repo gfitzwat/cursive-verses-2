@@ -63,7 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
 			status: 400,
 			headers: jsonHeaders,
 		});
-		}
+	}
 
 	const remoteIp = request.headers.get("CF-Connecting-IP") ?? "";
 	const verifyBody = new URLSearchParams();
@@ -89,15 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
 
 	const from = env.CONTACT_FROM_EMAIL?.trim() || "Cursive Verses Contact <onboarding@resend.dev>";
 	const subject = `Cursive Verses contact from ${name}`;
-	const text = [
-		"New contact form message",
-		"",
-		`Name: ${name}`,
-		`Email: ${email}`,
-		"",
-		"Message:",
-		message,
-	].join("\n");
+	const text = ["New contact form message", "", `Name: ${name}`, `Email: ${email}`, "", "Message:", message].join("\n");
 
 	const emailRes = await fetch("https://api.resend.com/emails", {
 		method: "POST",
