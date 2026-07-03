@@ -51,7 +51,9 @@ export default function HomePage() {
 						<h1 className="mt-4 text-4xl font-bold leading-tight text-brand-deep sm:text-5xl">
 							Write the Word.
 							<br />
-							<span className="text-brand-teal">By Hand. In Cursive.</span>
+							<span className="text-brand-teal ">By Hand. In Cursive.</span>
+							<br />
+							Live the Word.
 						</h1>
 						<p className="mt-5 max-w-xl text-lg leading-relaxed text-brand-deep/60 lg:max-w-none">
 							<strong>Free</strong> printable Bible verse handwriting worksheets — to help you slow down, reflect, and hide Scripture in your heart.
