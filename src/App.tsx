@@ -7,14 +7,13 @@ import VerseSelector from "./components/VerseSelector";
 import WorksheetControls from "./components/WorksheetControls";
 import Worksheet from "./components/Worksheet";
 
+const ALLOWED_VERSION_IDS = [12, 111, 42, 2692]; // ASV, NIV, CPDV, NASB2020
+
 const FALLBACK_VERSIONS: BibleVersion[] = [
-	{ id: 3034, abbreviation: "BSB", localized_abbreviation: "BSB", localized_title: "Berean Standard Bible" },
 	{ id: 12, abbreviation: "ASV", localized_abbreviation: "ASV", localized_title: "American Standard Version" },
-	{ id: 206, abbreviation: "WEBUS", localized_abbreviation: "WEBUS", localized_title: "World English Bible" },
-	{ id: 2660, abbreviation: "LSV", localized_abbreviation: "LSV", localized_title: "Literal Standard Version" },
-	{ id: 1932, abbreviation: "FBV", localized_abbreviation: "FBV", localized_title: "Free Bible Version" },
+	{ id: 111, abbreviation: "NIV", localized_abbreviation: "NIV", localized_title: "New International Version" },
 	{ id: 42, abbreviation: "CPDV", localized_abbreviation: "CPDV", localized_title: "Catholic Public Domain Version" },
-	{ id: 2163, abbreviation: "GNV", localized_abbreviation: "GNV", localized_title: "Geneva Bible" },
+	{ id: 2692, abbreviation: "NASB2020", localized_abbreviation: "NASB2020", localized_title: "New American Standard Bible" },
 ];
 
 interface PassageResponse {
@@ -35,7 +34,7 @@ function parseUsfm(usfm: string): { bookUsfm: string; chapter: number; verse: nu
 
 export default function App() {
 	const [versions, setVersions] = useState<BibleVersion[]>(FALLBACK_VERSIONS);
-	const [bibleId, setBibleId] = useState(3034);
+	const [bibleId, setBibleId] = useState(12);
 	const currentVersion = versions.find((v) => v.id === bibleId) ?? versions[0];
 	const [verse, setVerse] = useState<BibleVerse | null>(null);
 	const [settings, setSettings] = useState<WorksheetSettings>(DEFAULT_SETTINGS);
@@ -46,7 +45,8 @@ export default function App() {
 		fetch("/api/versions")
 			.then((r) => (r.ok ? r.json() : null))
 			.then((data: { data?: BibleVersion[] } | null) => {
-				if (data?.data?.length) setVersions(data.data);
+				const filtered = data?.data?.filter((v) => ALLOWED_VERSION_IDS.includes(v.id));
+				if (filtered?.length) setVersions(filtered);
 			})
 			.catch(() => {});
 	}, []);
@@ -80,7 +80,7 @@ export default function App() {
 	);
 
 	useEffect(() => {
-		handleVotd(3034);
+		handleVotd(12);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function handleDownloadPdf() {
