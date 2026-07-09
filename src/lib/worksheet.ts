@@ -56,7 +56,7 @@ export function getColors(s: WorksheetSettings) {
 		descender: toneToHex(s.descenderTone, "#e2e8f0", "#94a3b8"),
 		xHeight: toneToHex(s.xHeightTone, "#cbd5e1", "#64748b"),
 		capHeight: toneToHex(s.capHeightTone, "#cbd5e1", "#64748b"),
-		text: toneToHex(s.textTone, "#94a3b8", "#334155"),
+		text: toneToHex(s.textTone, "#94a3b8", "#1a1a1a"),
 	};
 }
 

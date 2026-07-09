@@ -119,11 +119,40 @@ export default function App() {
 			const scaledCapHeight = capHeight * xScale;
 			const scaledXHeight = xHeight * xScale;
 
+			const wrapPlainText = (text: string, maxWidth: number): string[] => {
+				const words = text.split(" ");
+				const lines: string[] = [];
+				let current = "";
+				for (const word of words) {
+					const candidate = current ? `${current} ${word}` : word;
+					if (ctx.measureText(candidate).width <= maxWidth) {
+						current = candidate;
+					} else {
+						if (current) lines.push(current);
+						current = word;
+					}
+				}
+				if (current) lines.push(current);
+				return lines;
+			};
+
+			const headerFontSize = 9 * scale;
+			const headerLineGap = 12 * scale;
+			ctx.font = `${headerFontSize}px sans-serif`;
+			const headerVerseLines = wrapPlainText(cleanText(verse.text), drawWidth).slice(0, 2);
+			ctx.fillStyle = "#64748b";
+			ctx.textAlign = "left";
+			headerVerseLines.forEach((line, i) => {
+				ctx.fillText(line, marginX, marginY + headerFontSize + i * headerLineGap);
+			});
+			const headerBlockHeight = headerFontSize + (headerVerseLines.length - 1) * headerLineGap + 16 * scale;
+			const linesTop = marginY + headerBlockHeight;
+
 			const verseLines = wrapText(cleanText(verse.text), fontSize, settings.wordSpacing);
 			const blankCount = Math.max(4, settings.linesPerPage - verseLines.length);
 
 			function drawLine(yBase: number, text?: string) {
-				const y = marginY + yBase;
+				const y = linesTop + yBase;
 				ctx.strokeStyle = colors.descender;
 				ctx.lineWidth = 1 * scale;
 				ctx.setLineDash([]);
@@ -165,34 +194,7 @@ export default function App() {
 			verseLines.forEach((line, i) => drawLine(i * scaledLineHeight, line));
 			for (let i = 0; i < blankCount; i++) drawLine((verseLines.length + i) * scaledLineHeight);
 
-			const wrapFooterText = (text: string, maxWidth: number): string[] => {
-				const words = text.split(" ");
-				const lines: string[] = [];
-				let current = "";
-				for (const word of words) {
-					const candidate = current ? `${current} ${word}` : word;
-					if (ctx.measureText(candidate).width <= maxWidth) {
-						current = candidate;
-					} else {
-						if (current) lines.push(current);
-						current = word;
-					}
-				}
-				if (current) lines.push(current);
-				return lines;
-			};
-
-			const footerVerse = cleanText(verse.text);
-			ctx.fillStyle = "#64748b";
-			ctx.font = `${9 * scale}px sans-serif`;
-			ctx.textAlign = "left";
-			const footerVerseLines = wrapFooterText(footerVerse, drawWidth);
 			const footerInfoY = pageH - marginY / 3;
-			const footerVerseLinesToDraw = footerVerseLines.slice(0, 2);
-			const footerVerseYStart = footerInfoY - 8 * scale - (footerVerseLinesToDraw.length - 1) * (12 * scale);
-			footerVerseLinesToDraw.forEach((line, i) => {
-				ctx.fillText(line, marginX, footerVerseYStart + i * (12 * scale));
-			});
 
 			ctx.fillStyle = "#94a3b8";
 			ctx.font = `${12 * scale}px sans-serif`;
