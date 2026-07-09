@@ -156,7 +156,7 @@ export default function App() {
 			const headerBlockHeight = quoteTop + headerFontSize + (headerVerseLines.length - 1) * headerLineGap - marginY + 16 * scale;
 			const linesTop = marginY + headerBlockHeight;
 
-			const verseLines = wrapText(cleanText(verse.text), fontSize, settings.wordSpacing);
+			const verseLines = wrapText(cleanText(verse.text), fontSize, settings.wordSpacing, fontFamily);
 			const blankCount = Math.max(4, settings.linesPerPage - verseLines.length);
 
 			function drawLine(yBase: number, text?: string) {

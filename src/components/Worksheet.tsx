@@ -63,7 +63,8 @@ export default function Worksheet({ verse, settings }: Props) {
 	const { fontSize, lineHeight, baseline, capHeight, xHeight } = scaledDimensions(settings.fontScale);
 	const colors = getColors(settings);
 
-	const fontFamily = settings.mode === "tracing" ? "LearningCurveDashed, cursive" : "LearningCurve, cursive";
+	const fontFamilyName = settings.mode === "tracing" ? "LearningCurveDashed" : "LearningCurve";
+	const fontFamily = `${fontFamilyName}, cursive`;
 
 	const pageHeight = settings.linesPerPage * lineHeight;
 
@@ -72,7 +73,7 @@ export default function Worksheet({ verse, settings }: Props) {
 
 	if (verse) {
 		const text = cleanText(verse.text);
-		verseLines = wrapText(text, fontSize, settings.wordSpacing);
+		verseLines = wrapText(text, fontSize, settings.wordSpacing, fontFamilyName);
 		const minBlanks = 4;
 		blankCount = Math.max(minBlanks, settings.linesPerPage - verseLines.length);
 	}

@@ -72,12 +72,12 @@ export function scaledDimensions(fontScale: number) {
 const SVG_WIDTH = 1000;
 
 // Estimate character width for text wrapping. Falls back to ~22px/char avg.
-function measureTextWidth(text: string, fontSize: number, wordSpacingEm: number, canvas?: HTMLCanvasElement): number {
+function measureTextWidth(text: string, fontSize: number, wordSpacingEm: number, fontFamily: string, canvas?: HTMLCanvasElement): number {
 	if (typeof document !== "undefined") {
 		const c = canvas ?? document.createElement("canvas");
 		const ctx = c.getContext("2d");
 		if (ctx) {
-			ctx.font = `${fontSize}px LearningCurve, cursive`;
+			ctx.font = `${fontSize}px ${fontFamily}, cursive`;
 			const extra = (text.split(" ").length - 1) * wordSpacingEm * fontSize;
 			return ctx.measureText(text).width + extra;
 		}
@@ -86,7 +86,7 @@ function measureTextWidth(text: string, fontSize: number, wordSpacingEm: number,
 	return text.length * fontSize * 0.5;
 }
 
-export function wrapText(text: string, fontSize: number, wordSpacingEm: number, maxWidth = SVG_WIDTH): string[] {
+export function wrapText(text: string, fontSize: number, wordSpacingEm: number, fontFamily: string, maxWidth = SVG_WIDTH): string[] {
 	const words = text.split(" ");
 	const lines: string[] = [];
 	let current = "";
@@ -94,7 +94,7 @@ export function wrapText(text: string, fontSize: number, wordSpacingEm: number, 
 
 	for (const word of words) {
 		const candidate = current ? `${current} ${word}` : word;
-		if (measureTextWidth(candidate, fontSize, wordSpacingEm, canvas) <= maxWidth) {
+		if (measureTextWidth(candidate, fontSize, wordSpacingEm, fontFamily, canvas) <= maxWidth) {
 			current = candidate;
 		} else {
 			if (current) lines.push(current);
