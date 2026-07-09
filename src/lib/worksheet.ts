@@ -20,14 +20,14 @@ export interface WorksheetSettings {
 
 export const DEFAULT_SETTINGS: WorksheetSettings = {
 	mode: "tracing",
-	fontScale: 1.36,
+	fontScale: 1.45,
 	linesPerPage: 12,
 	baselineTone: 50,
 	descenderTone: 100,
 	xHeightTone: 100,
 	capHeightTone: 100,
 	textTone: 90,
-	wordSpacing: 0,
+	wordSpacing: 0.5,
 };
 
 function lerp(a: number, b: number, t: number): number {
