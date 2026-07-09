@@ -136,16 +136,24 @@ export default function App() {
 				return lines;
 			};
 
+			const headerRefFontSize = 13 * scale;
 			const headerFontSize = 9 * scale;
 			const headerLineGap = 12 * scale;
+
+			ctx.font = `bold ${headerRefFontSize}px sans-serif`;
+			ctx.fillStyle = "#334155";
+			ctx.textAlign = "left";
+			const headerRefText = `${verse.book_name} ${verse.chapter}:${verse.verse} (${currentVersion?.localized_abbreviation ?? ""})`;
+			ctx.fillText(headerRefText, marginX, marginY + headerRefFontSize);
+
+			const quoteTop = marginY + headerRefFontSize + 10 * scale;
 			ctx.font = `${headerFontSize}px sans-serif`;
 			const headerVerseLines = wrapPlainText(cleanText(verse.text), drawWidth).slice(0, 2);
 			ctx.fillStyle = "#64748b";
-			ctx.textAlign = "left";
 			headerVerseLines.forEach((line, i) => {
-				ctx.fillText(line, marginX, marginY + headerFontSize + i * headerLineGap);
+				ctx.fillText(line, marginX, quoteTop + headerFontSize + i * headerLineGap);
 			});
-			const headerBlockHeight = headerFontSize + (headerVerseLines.length - 1) * headerLineGap + 16 * scale;
+			const headerBlockHeight = quoteTop + headerFontSize + (headerVerseLines.length - 1) * headerLineGap - marginY + 16 * scale;
 			const linesTop = marginY + headerBlockHeight;
 
 			const verseLines = wrapText(cleanText(verse.text), fontSize, settings.wordSpacing);
@@ -196,11 +204,8 @@ export default function App() {
 
 			const footerInfoY = pageH - marginY / 3;
 
-			ctx.fillStyle = "#94a3b8";
-			ctx.font = `${12 * scale}px sans-serif`;
-			ctx.textAlign = "right";
-			ctx.fillText(`${verse.book_name} ${verse.chapter}:${verse.verse} (${currentVersion?.localized_abbreviation ?? ""})`, pageW - marginX, footerInfoY);
 			if (currentVersion?.copyright) {
+				ctx.fillStyle = "#94a3b8";
 				ctx.textAlign = "left";
 				ctx.font = `${10 * scale}px sans-serif`;
 				ctx.fillText(currentVersion.copyright, marginX, footerInfoY);
