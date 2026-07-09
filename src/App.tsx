@@ -1,25 +1,26 @@
 import { useState, useEffect, useCallback } from "react";
 import type { BibleVerse, BibleVersion } from "./lib/bible";
-import { BIBLE_BOOKS, cleanText } from "./lib/bible";
+import { BIBLE_BOOKS, LOCAL_VERSIONS, cleanText, sortVersions } from "./lib/bible";
+import { fetchVerseText } from "./lib/verseFetch";
 import { DEFAULT_SETTINGS, scaledDimensions, getColors, wrapText } from "./lib/worksheet";
 import type { WorksheetSettings } from "./lib/worksheet";
 import VerseSelector from "./components/VerseSelector";
 import WorksheetControls from "./components/WorksheetControls";
 import Worksheet from "./components/Worksheet";
 
-const ALLOWED_VERSION_IDS = [12, 111, 42, 2692]; // ASV, NIV, CPDV, NASB2020
+const ALLOWED_REMOTE_VERSION_IDS = [12, 111, 42, 2692]; // ASV, NIV, CPDV, NASB2020
+const DEFAULT_BIBLE_ID = 111; // NIV
 
-const FALLBACK_VERSIONS: BibleVersion[] = [
+const FALLBACK_REMOTE_VERSIONS: BibleVersion[] = [
 	{ id: 12, abbreviation: "ASV", localized_abbreviation: "ASV", localized_title: "American Standard Version" },
 	{ id: 111, abbreviation: "NIV", localized_abbreviation: "NIV", localized_title: "New International Version" },
 	{ id: 42, abbreviation: "CPDV", localized_abbreviation: "CPDV", localized_title: "Catholic Public Domain Version" },
 	{ id: 2692, abbreviation: "NASB2020", localized_abbreviation: "NASB2020", localized_title: "New American Standard Bible" },
 ];
 
-interface PassageResponse {
-	id?: string;
-	content?: string;
-	reference?: string;
+const FALLBACK_VERSIONS: BibleVersion[] = sortVersions([...FALLBACK_REMOTE_VERSIONS, ...LOCAL_VERSIONS]);
+
+interface VotdResponse {
 	passage_id?: string;
 }
 
@@ -34,7 +35,7 @@ function parseUsfm(usfm: string): { bookUsfm: string; chapter: number; verse: nu
 
 export default function App() {
 	const [versions, setVersions] = useState<BibleVersion[]>(FALLBACK_VERSIONS);
-	const [bibleId, setBibleId] = useState(12);
+	const [bibleId, setBibleId] = useState(DEFAULT_BIBLE_ID);
 	const currentVersion = versions.find((v) => v.id === bibleId) ?? versions[0];
 	const [verse, setVerse] = useState<BibleVerse | null>(null);
 	const [settings, setSettings] = useState<WorksheetSettings>(DEFAULT_SETTINGS);
@@ -45,8 +46,8 @@ export default function App() {
 		fetch("/api/versions")
 			.then((r) => (r.ok ? r.json() : null))
 			.then((data: { data?: BibleVersion[] } | null) => {
-				const filtered = data?.data?.filter((v) => ALLOWED_VERSION_IDS.includes(v.id));
-				if (filtered?.length) setVersions(filtered);
+				const filteredRemote = data?.data?.filter((v) => ALLOWED_REMOTE_VERSION_IDS.includes(v.id));
+				if (filteredRemote?.length) setVersions(sortVersions([...filteredRemote, ...LOCAL_VERSIONS]));
 			})
 			.catch(() => {});
 	}, []);
@@ -55,20 +56,23 @@ export default function App() {
 		async (id = bibleId) => {
 			setVotdLoading(true);
 			try {
-				const res = await fetch(`/api/verse-of-day?bible_id=${id}`);
+				const res = await fetch(`/api/verse-of-day`);
 				if (!res.ok) throw new Error(`HTTP ${res.status}`);
-				const data = (await res.json()) as PassageResponse;
-				if (!data.content) throw new Error("No content");
+				const data = (await res.json()) as VotdResponse;
+				if (!data.passage_id) throw new Error("No passage_id");
 
-				const { bookUsfm, chapter, verse: verseNum } = parseUsfm(data.passage_id ?? data.id ?? "");
+				const { bookUsfm, chapter, verse: verseNum } = parseUsfm(data.passage_id);
 				const book = BIBLE_BOOKS.find((b) => b.usfm === bookUsfm);
 
+				const text = await fetchVerseText(id, bookUsfm, chapter, verseNum);
+				if (!text) throw new Error("No content");
+
 				setVerse({
-					book_name: book?.name ?? data.reference?.split(" ")[0] ?? "",
+					book_name: book?.name ?? "",
 					book_usfm: bookUsfm,
 					chapter,
 					verse: verseNum,
-					text: cleanText(data.content),
+					text: cleanText(text),
 				});
 			} catch {
 				alert("Could not load verse of the day. Please try again.");
@@ -80,7 +84,7 @@ export default function App() {
 	);
 
 	useEffect(() => {
-		handleVotd(12);
+		handleVotd(DEFAULT_BIBLE_ID);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function handleDownloadPdf() {

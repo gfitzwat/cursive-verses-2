@@ -2,8 +2,7 @@ interface Env {
   YOUVERSION_TOKEN: string;
 }
 
-export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
-  const bibleId = new URL(request.url).searchParams.get('bible_id') ?? '1';
+export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   const headers = { 'X-YVP-App-Key': env.YOUVERSION_TOKEN };
   const base = 'https://api.youversion.com';
 
@@ -23,12 +22,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
     });
   }
 
-  const textRes = await fetch(
-    `${base}/v1/bibles/${bibleId}/passages/${encodeURIComponent(votd.passage_id)}`,
-    { headers },
-  );
-  const text = await textRes.json();
-  return new Response(JSON.stringify({ ...(text as object), passage_id: votd.passage_id }), {
-    status: textRes.status, headers: { 'Content-Type': 'application/json' },
+  return new Response(JSON.stringify({ passage_id: votd.passage_id }), {
+    headers: { 'Content-Type': 'application/json' },
   });
 };

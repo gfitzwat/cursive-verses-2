@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import { BIBLE_BOOKS, maxVerses, cleanText } from "../lib/bible";
 import type { BibleVerse, BibleVersion } from "../lib/bible";
-
-interface PassageResponse {
-	id?: string;
-	content?: string;
-	reference?: string;
-}
+import { fetchVerseText } from "../lib/verseFetch";
 
 interface Props {
 	versions: BibleVersion[];
@@ -40,11 +35,7 @@ export default function VerseSelector({ versions, bibleId, onBibleChange, onVers
 		setLoading(true);
 		setError("");
 		try {
-			const usfm = `${book.usfm}.${chapter}.${verseNum}`;
-			const res = await fetch(`/api/verse?usfm=${usfm}&bible_id=${bibleId}`);
-			if (!res.ok) throw new Error(`HTTP ${res.status}`);
-			const data = (await res.json()) as PassageResponse;
-			const text = data.content ?? "";
+			const text = await fetchVerseText(bibleId, book.usfm, chapter, verseNum);
 			if (!text) throw new Error("No verse text returned");
 			onVerseSelect({
 				book_name: book.name,

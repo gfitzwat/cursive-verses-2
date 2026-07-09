@@ -160,12 +160,29 @@ export const VERSE_COUNTS: number[][] = [
   [20,29,22,11,14,17,17,13,21,11,19,17,18,20,8,21,18,24,21,15,27,21],
 ];
 
+// Negative ids identify locally-bundled public-domain translations (see localBibles.ts),
+// distinguishing them from positive YouVersion API ids.
+export const LOCAL_VERSIONS: BibleVersion[] = [
+  { id: -1, abbreviation: "BSB", localized_abbreviation: "BSB", localized_title: "Berean Standard Bible", copyright: "This text of God's Word has been dedicated to the public domain. Free resources and databases are available at BereanBible.com." },
+  { id: -2, abbreviation: "KJV", localized_abbreviation: "KJV", localized_title: "King James Version", copyright: "This Bible is in the Public Domain in most parts of the world. However, in the United Kingdom, it is under perpetual Crown copyright." },
+  { id: -3, abbreviation: "NET", localized_abbreviation: "NET", localized_title: "New English Translation", copyright: "NET Bible® copyright ©1996, 2016 by Biblical Studies Press, L.L.C. Used by permission. All rights reserved." },
+  { id: -4, abbreviation: "WEB", localized_abbreviation: "WEB", localized_title: "World English Bible", copyright: "This Bible is in the Public Domain." },
+];
+
+export function isLocalBibleId(id: number): boolean {
+  return id < 0;
+}
+
+export function sortVersions(versions: BibleVersion[]): BibleVersion[] {
+  return [...versions].sort((a, b) => a.localized_abbreviation.localeCompare(b.localized_abbreviation));
+}
+
 export function verseRef(verse: BibleVerse): string {
   return `${verse.book_name} ${verse.chapter}:${verse.verse}`;
 }
 
 export function cleanText(text: string): string {
-  return text.replace(/¶/g, '').replace(/\[.*?\]/g, '').replace(/\s+/g, ' ').trim();
+  return text.replace(/[¶‹›]/g, '').replace(/\[.*?\]/g, '').replace(/\s+/g, ' ').trim();
 }
 
 export function maxVerses(bookIndex: number, chapterIndex: number): number {
