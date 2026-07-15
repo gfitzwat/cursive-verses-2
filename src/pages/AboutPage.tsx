@@ -9,9 +9,11 @@ export default function AboutPage() {
 				<p className="text-slate-800 text-sm mb-10">A handwriting worksheet generator for Scripture</p>
 
 				<div className="prose max-w-none space-y-6 leading-relaxed [--tw-prose-body:theme(colors.slate.900)] [--tw-prose-headings:theme(colors.slate.950)] [--tw-prose-links:theme(colors.slate.900)] [--tw-prose-bold:theme(colors.slate.950)] [--tw-prose-bullets:theme(colors.slate.700)]">
+					<p>When I began journaling during my morning Bible study, I started to notice my handwriting. My mom and my aunt Brenda always had beautiful cursive handwriting; mine wasn’t beautiful, but I’m working on it. </p>
+
 					<p>
-						Growing up, my mom and my aunt Brenda always had beautiful cursive handwriting. When I started journaling during my morning Bible study, I began to think about my own handwriting. As I wrote out Bible verses by hand each morning, I realized the practice made me slow down and reflect more
-						deeply on what I was reading. Writing the words helped them stay with me throughout the day and gave new meaning to passages I already knew. Soon after, I came across some studies about the benefits of cursive writing, writing things down, and Bible study.
+						As I wrote out Bible verses by hand each morning, I realized the practice made me slow down and reflect more deeply on what I was reading. Writing the words helped them stay with me throughout the day and gave new meaning to passages I already knew. Soon after, I came across some studies
+						about the benefits of cursive writing, writing things down, and Bible study.
 					</p>
 					<ul className="list-disc pl-5 space-y-1">
 						<li>
