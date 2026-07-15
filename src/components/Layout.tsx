@@ -26,10 +26,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						</button>
 
 						<nav className="hidden md:flex items-center gap-6 text-sm">
-							<NavLink to="/about" className={({ isActive }) => (isActive ? "text-brand-teal font-medium" : "text-brand-deep/70 hover:text-brand-deep")}>
+							<NavLink to="/about" className={({ isActive }) => isActive ? "text-brand-teal font-medium border-b-2 border-dashed border-brand-teal/50 pb-0.5" : "text-brand-deep/70 hover:text-brand-deep"}>
 								About
 							</NavLink>
-							<NavLink to="/contact" className={({ isActive }) => (isActive ? "text-brand-teal font-medium" : "text-brand-deep/70 hover:text-brand-deep")}>
+							<NavLink to="/practice" className={({ isActive }) => isActive ? "text-brand-teal font-medium border-b-2 border-dashed border-brand-teal/50 pb-0.5" : "text-brand-deep/70 hover:text-brand-deep"}>
+								Practice
+							</NavLink>
+							<NavLink to="/contact" className={({ isActive }) => isActive ? "text-brand-teal font-medium border-b-2 border-dashed border-brand-teal/50 pb-0.5" : "text-brand-deep/70 hover:text-brand-deep"}>
 								Contact
 							</NavLink>
 							<NavLink to="/app" className={({ isActive }) => `rounded-lg text-sm font-medium px-4 py-2 transition-colors ${isActive ? "bg-brand-teal hover:bg-brand-teal/90 text-white" : "bg-brand-deep hover:bg-brand-deep/90 text-white"}`}>
@@ -42,6 +45,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						<nav className="md:hidden pt-3 pb-1 border-t border-brand-deep/10 mt-3 flex flex-col gap-1 text-sm">
 							<NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => `rounded-lg px-3 py-2 ${isActive ? "bg-brand-teal/10 text-brand-teal font-medium" : "text-brand-deep/80 hover:bg-brand-deep/5"}`}>
 								About
+							</NavLink>
+							<NavLink to="/practice" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => `rounded-lg px-3 py-2 ${isActive ? "bg-brand-teal/10 text-brand-teal font-medium" : "text-brand-deep/80 hover:bg-brand-deep/5"}`}>
+								Practice
 							</NavLink>
 							<NavLink to="/contact" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => `rounded-lg px-3 py-2 ${isActive ? "bg-brand-teal/10 text-brand-teal font-medium" : "text-brand-deep/80 hover:bg-brand-deep/5"}`}>
 								Contact
@@ -64,8 +70,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						<NavLink to="/about" className="text-brand-deep/80 hover:text-brand-deep">
 							About
 						</NavLink>
+						<NavLink to="/practice" className="text-brand-deep/80 hover:text-brand-deep">
+							Practice
+						</NavLink>
 						<NavLink to="/contact" className="text-brand-deep/80 hover:text-brand-deep">
 							Contact
+						</NavLink>
+						<NavLink to="/privacy" className="text-brand-deep/80 hover:text-brand-deep">
+							Privacy Policy
 						</NavLink>
 						<NavLink to="/app" className="text-brand-deep/80 hover:text-brand-deep">
 							Start writing

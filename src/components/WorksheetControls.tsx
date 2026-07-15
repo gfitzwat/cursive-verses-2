@@ -1,4 +1,4 @@
-import type { WorksheetSettings, Mode } from "../lib/worksheet";
+import type { WorksheetSettings } from "../lib/worksheet";
 
 interface Props {
 	settings: WorksheetSettings;
@@ -21,18 +21,6 @@ export default function WorksheetControls({ settings, onChange }: Props) {
 
 	return (
 		<div className="flex flex-col gap-3">
-			{/* Mode */}
-			<div>
-				<p className="text-xs font-semibold text-brand-deep/80 uppercase tracking-wider mb-1">Mode</p>
-				<div className="flex gap-2">
-					{(["tracing", "copywork"] as Mode[]).map((m) => (
-						<button key={m} onClick={() => set("mode", m)} className={`px-3 py-1.5 rounded text-sm font-medium capitalize transition-colors ${settings.mode === m ? "bg-brand-deep text-white" : "bg-brand-cream text-brand-deep/80 hover:bg-brand-cream/70"}`}>
-							{m}
-						</button>
-					))}
-				</div>
-			</div>
-
 			{/* Layout */}
 			<div>
 				<p className="text-xs font-semibold text-brand-deep/80 uppercase tracking-wider mb-1">Layout</p>
@@ -54,10 +42,10 @@ export default function WorksheetControls({ settings, onChange }: Props) {
 				</div>
 			</div>
 
-			{/* Text tone */}
+			{/* Text opacity */}
 			<div>
 				<p className="text-xs font-semibold text-brand-deep/80 uppercase tracking-wider mb-1">Text</p>
-				<Slider label="Verse Darkness" min={0} max={100} step={1} value={settings.textTone} onChange={(v) => set("textTone", v)} />
+				<Slider label={`Verse Opacity (${settings.textOpacity}%)`} min={0} max={100} step={1} value={settings.textOpacity} onChange={(v) => set("textOpacity", v)} />
 			</div>
 		</div>
 	);

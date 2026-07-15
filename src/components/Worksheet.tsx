@@ -38,10 +38,11 @@ interface TextLineProps extends LineProps {
 	fontSize: number;
 	fontFamily: string;
 	color: string;
+	fillOpacity: number;
 	wordSpacing: number;
 }
 
-function TextGuideLine({ text, fontSize, fontFamily, color, wordSpacing, ...guideProps }: TextLineProps) {
+function TextGuideLine({ text, fontSize, fontFamily, color, fillOpacity, wordSpacing, ...guideProps }: TextLineProps) {
 	const { baseline } = guideProps;
 	return (
 		<svg viewBox={`0 0 ${SVG_WIDTH} ${guideProps.lineHeight}`} width="100%" style={{ display: "block" }}>
@@ -51,7 +52,7 @@ function TextGuideLine({ text, fontSize, fontFamily, color, wordSpacing, ...guid
 			<line x1="0" y1={guideProps.xHeight} x2={SVG_WIDTH} y2={guideProps.xHeight} stroke={guideProps.colors.xHeight} strokeWidth="1" strokeDasharray="4,4" />
 			<line x1="0" y1={guideProps.capHeight} x2={SVG_WIDTH} y2={guideProps.capHeight} stroke={guideProps.colors.capHeight} strokeWidth="1" strokeDasharray="2,6" />
 			{/* Verse text */}
-			<text x="0" y={baseline} fontFamily={fontFamily} fontSize={fontSize} fill={color} wordSpacing={`${wordSpacing}em`}>
+			<text x="0" y={baseline} fontFamily={fontFamily} fontSize={fontSize} fill={color} fillOpacity={fillOpacity} wordSpacing={`${wordSpacing}em`}>
 				{text}
 			</text>
 		</svg>
@@ -63,7 +64,7 @@ export default function Worksheet({ verse, settings }: Props) {
 	const { fontSize, lineHeight, baseline, capHeight, xHeight } = scaledDimensions(settings.fontScale);
 	const colors = getColors(settings);
 
-	const fontFamilyName = settings.mode === "tracing" ? "LearningCurveDashed" : "LearningCurve";
+	const fontFamilyName = "LearningCurveDashed";
 	const fontFamily = `${fontFamilyName}, cursive`;
 
 	const pageHeight = settings.linesPerPage * lineHeight;
@@ -84,7 +85,7 @@ export default function Worksheet({ verse, settings }: Props) {
 		<div ref={containerRef} style={{ maxWidth: "100%" }}>
 			{/* Verse lines */}
 			{verseLines.map((line, i) => (
-				<TextGuideLine key={i} text={line} fontSize={fontSize} fontFamily={fontFamily} color={colors.text} wordSpacing={settings.wordSpacing} {...guideProps} />
+				<TextGuideLine key={i} text={line} fontSize={fontSize} fontFamily={fontFamily} color="#111111" fillOpacity={settings.textOpacity / 100} wordSpacing={settings.wordSpacing} {...guideProps} />
 			))}
 
 			{/* Blank practice lines */}

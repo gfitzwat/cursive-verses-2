@@ -4,29 +4,25 @@ export const BASE_BASELINE = 60;
 export const CAP_HEIGHT_RATIO = 0.52; // cap height above baseline as fraction of line height
 export const X_HEIGHT_RATIO = 0.28; // x-height above baseline as fraction of line height
 
-export type Mode = "tracing" | "copywork";
-
 export interface WorksheetSettings {
-	mode: Mode;
 	fontScale: number; // 1.0 – 1.7
 	linesPerPage: number; // 10 – 18
 	baselineTone: number; // 0 – 100
 	descenderTone: number; // 0 – 100
 	xHeightTone: number; // 0 – 100
 	capHeightTone: number; // 0 – 100
-	textTone: number; // 0 – 100
+	textOpacity: number; // 0 – 100
 	wordSpacing: number; // 0 – 1.5 (em)
 }
 
 export const DEFAULT_SETTINGS: WorksheetSettings = {
-	mode: "tracing",
 	fontScale: 1.35,
 	linesPerPage: 12,
 	baselineTone: 50,
 	descenderTone: 100,
 	xHeightTone: 100,
 	capHeightTone: 100,
-	textTone: 90,
+	textOpacity: 80,
 	wordSpacing: 0.35,
 };
 
@@ -56,7 +52,6 @@ export function getColors(s: WorksheetSettings) {
 		descender: toneToHex(s.descenderTone, "#e2e8f0", "#94a3b8"),
 		xHeight: toneToHex(s.xHeightTone, "#cbd5e1", "#64748b"),
 		capHeight: toneToHex(s.capHeightTone, "#cbd5e1", "#64748b"),
-		text: toneToHex(s.textTone, "#94a3b8", "#1a1a1a"),
 	};
 }
 

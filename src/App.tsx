@@ -38,6 +38,7 @@ export default function App() {
 	const [bibleId, setBibleId] = useState(DEFAULT_BIBLE_ID);
 	const currentVersion = versions.find((v) => v.id === bibleId) ?? versions[0];
 	const [verse, setVerse] = useState<BibleVerse | null>(null);
+	const [currentUsfm, setCurrentUsfm] = useState<{ bookUsfm: string; chapter: number; verseNum: number } | null>(null);
 	const [settings, setSettings] = useState<WorksheetSettings>(DEFAULT_SETTINGS);
 	const [votdLoading, setVotdLoading] = useState(false);
 	const [pdfLoading, setPdfLoading] = useState(false);
@@ -67,6 +68,7 @@ export default function App() {
 				const text = await fetchVerseText(id, bookUsfm, chapter, verseNum);
 				if (!text) throw new Error("No content");
 
+				setCurrentUsfm({ bookUsfm, chapter, verseNum });
 				setVerse({
 					book_name: book?.name ?? "",
 					book_usfm: bookUsfm,
@@ -86,6 +88,17 @@ export default function App() {
 	useEffect(() => {
 		handleVotd(DEFAULT_BIBLE_ID);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	// Re-fetch the current verse when the user switches Bible version
+	useEffect(() => {
+		if (!currentUsfm) return;
+		const { bookUsfm, chapter, verseNum } = currentUsfm;
+		const book = BIBLE_BOOKS.find((b) => b.usfm === bookUsfm);
+		fetchVerseText(bibleId, bookUsfm, chapter, verseNum).then((text) => {
+			if (!text) return;
+			setVerse({ book_name: book?.name ?? "", book_usfm: bookUsfm, chapter, verse: verseNum, text: cleanText(text) });
+		});
+	}, [bibleId]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function handleDownloadPdf() {
 		if (!verse) return;
@@ -112,7 +125,7 @@ export default function App() {
 			const drawWidth = pageW - marginX * 2;
 			const xScale = drawWidth / 1000;
 
-			const fontFamily = settings.mode === "tracing" ? "LearningCurveDashed" : "LearningCurve";
+			const fontFamily = "LearningCurveDashed";
 			const scaledFontSize = fontSize * xScale;
 			const scaledLineHeight = lineHeight * xScale;
 			const scaledBaseline = baseline * xScale;
@@ -193,9 +206,11 @@ export default function App() {
 				ctx.setLineDash([]);
 
 				if (text) {
-					ctx.fillStyle = colors.text;
+					ctx.globalAlpha = settings.textOpacity / 100;
+					ctx.fillStyle = "#111111";
 					ctx.font = `${scaledFontSize}px ${fontFamily}, cursive`;
 					ctx.fillText(text, marginX, y + scaledBaseline);
+					ctx.globalAlpha = 1;
 				}
 			}
 
@@ -231,7 +246,10 @@ export default function App() {
 							onBibleChange={(id) => {
 								setBibleId(id);
 							}}
-							onVerseSelect={setVerse}
+							onVerseSelect={(v) => {
+								setVerse(v);
+								setCurrentUsfm({ bookUsfm: v.book_usfm, chapter: v.chapter, verseNum: v.verse });
+							}}
 							onVotdClick={() => handleVotd()}
 							votdLoading={votdLoading}
 						/>
