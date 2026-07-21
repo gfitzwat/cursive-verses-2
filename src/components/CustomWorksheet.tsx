@@ -8,6 +8,7 @@ interface Props {
 const FONT_FAMILY = "LearningCurveDashed, cursive";
 const FONT_NAME = "LearningCurveDashed";
 const SVG_WIDTH = 1000;
+const TEXT_X = 8;
 
 export default function CustomWorksheet({ lines, settings }: Props) {
 	const { fontSize, lineHeight, baseline, capHeight, xHeight } = scaledDimensions(settings.fontScale);
@@ -29,7 +30,7 @@ export default function CustomWorksheet({ lines, settings }: Props) {
 		return (
 			<svg viewBox={`0 0 ${SVG_WIDTH} ${lineHeight}`} width="100%" style={{ display: "block" }}>
 				<GuideLines />
-				<text x="0" y={baseline} fontFamily={FONT_FAMILY} fontSize={fontSize} fill="#111111" fillOpacity={opacity} wordSpacing={`${settings.wordSpacing}em`}>
+				<text x={TEXT_X} y={baseline} fontFamily={FONT_FAMILY} fontSize={fontSize} fill="#111111" fillOpacity={opacity} wordSpacing={`${settings.wordSpacing}em`}>
 					{text}
 				</text>
 			</svg>
@@ -64,7 +65,7 @@ export default function CustomWorksheet({ lines, settings }: Props) {
 				if (!trimmed) {
 					return <BlankLine key={idx} />;
 				}
-				const wrapped = wrapText(trimmed, fontSize, settings.wordSpacing, FONT_NAME);
+				const wrapped = wrapText(trimmed, fontSize, settings.wordSpacing, FONT_NAME, SVG_WIDTH - TEXT_X);
 				return (
 					<div key={idx}>
 						{wrapped.map((segment, si) => (

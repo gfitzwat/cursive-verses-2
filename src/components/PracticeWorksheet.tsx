@@ -9,9 +9,10 @@ interface Props {
 const FONT_FAMILY = "LearningCurveDashed, cursive";
 const FONT_NAME = "LearningCurveDashed";
 const SVG_WIDTH = 1000;
+const TEXT_X = 8;
 
 const OPACITIES = [1.0, 0.73, 0.47, 0.2];
-const X_POSITIONS = [0, 250, 500, 750];
+const X_POSITIONS = [TEXT_X, 254, 504, 754];
 
 export default function PracticeWorksheet({ settings, letters, pangram }: Props) {
 	const { fontSize, lineHeight, baseline, capHeight, xHeight } = scaledDimensions(settings.fontScale);
@@ -54,7 +55,7 @@ export default function PracticeWorksheet({ settings, letters, pangram }: Props)
 		return (
 			<svg viewBox={`0 0 ${SVG_WIDTH} ${lineHeight}`} width="100%" style={{ display: "block" }}>
 				<GuideLines />
-				<text x="0" y={baseline} fontFamily={FONT_FAMILY} fontSize={fs} fill="#111111" fillOpacity={0.8} wordSpacing={`${settings.wordSpacing}em`}>
+				<text x={TEXT_X} y={baseline} fontFamily={FONT_FAMILY} fontSize={fs} fill="#111111" fillOpacity={0.8} wordSpacing={`${settings.wordSpacing}em`}>
 					{text}
 				</text>
 			</svg>
@@ -62,7 +63,7 @@ export default function PracticeWorksheet({ settings, letters, pangram }: Props)
 	}
 
 	const pangramFontSize = fontSize * 0.72;
-	const pangramLines = wrapText(pangram, pangramFontSize, settings.wordSpacing, FONT_NAME);
+	const pangramLines = wrapText(pangram, pangramFontSize, settings.wordSpacing, FONT_NAME, SVG_WIDTH - TEXT_X);
 
 	return (
 		<div style={{ maxWidth: "100%" }}>

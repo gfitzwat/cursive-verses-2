@@ -12,7 +12,7 @@ export default function AboutPage() {
 					<p>When I began journaling during my morning Bible study, I started to notice my handwriting. My mom and my aunt Brenda always had beautiful cursive handwriting; mine wasn’t beautiful, but I’m working on it. </p>
 
 					<p>
-						As I wrote out Bible verses by hand each morning, I realized the practice made me slow down and reflect more deeply on what I was reading. Writing the words helped them stay with me throughout the day and gave new meaning to passages I already knew. Soon after, I came across some studies
+						As I wrote out Bible verses by hand in cursive each morning, I realized the practice made me slow down and reflect more deeply on what I was reading. Writing the words helped them stay with me throughout the day and gave new meaning to passages I already knew. Soon after, I came across some studies
 						about the benefits of cursive writing, writing things down, and Bible study.
 					</p>
 					<ul className="list-disc pl-5 space-y-1">

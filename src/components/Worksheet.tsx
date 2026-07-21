@@ -9,6 +9,7 @@ interface Props {
 }
 
 const SVG_WIDTH = 1000;
+const TEXT_X = 8; // small left margin so cursive strokes don't clip
 
 interface LineProps {
 	lineHeight: number;
@@ -52,7 +53,7 @@ function TextGuideLine({ text, fontSize, fontFamily, color, fillOpacity, wordSpa
 			<line x1="0" y1={guideProps.xHeight} x2={SVG_WIDTH} y2={guideProps.xHeight} stroke={guideProps.colors.xHeight} strokeWidth="1" strokeDasharray="4,4" />
 			<line x1="0" y1={guideProps.capHeight} x2={SVG_WIDTH} y2={guideProps.capHeight} stroke={guideProps.colors.capHeight} strokeWidth="1" strokeDasharray="2,6" />
 			{/* Verse text */}
-			<text x="0" y={baseline} fontFamily={fontFamily} fontSize={fontSize} fill={color} fillOpacity={fillOpacity} wordSpacing={`${wordSpacing}em`}>
+			<text x={TEXT_X} y={baseline} fontFamily={fontFamily} fontSize={fontSize} fill={color} fillOpacity={fillOpacity} wordSpacing={`${wordSpacing}em`}>
 				{text}
 			</text>
 		</svg>
@@ -74,7 +75,7 @@ export default function Worksheet({ verse, settings }: Props) {
 
 	if (verse) {
 		const text = cleanText(verse.text);
-		verseLines = wrapText(text, fontSize, settings.wordSpacing, fontFamilyName);
+		verseLines = wrapText(text, fontSize, settings.wordSpacing, fontFamilyName, SVG_WIDTH - TEXT_X);
 		const minBlanks = 4;
 		blankCount = Math.max(minBlanks, settings.linesPerPage - verseLines.length);
 	}
